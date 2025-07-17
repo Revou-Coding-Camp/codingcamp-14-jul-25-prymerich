@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SewaKos</title>
+    <!-- Memuat Tailwind CSS melalui CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Opsi: Tambahkan font yang lebih menarik jika diinginkan */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        /* Style untuk transisi pada input dan pesan error */
+        .error-message {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Kontainer Utama dengan Latar Belakang Gradasi -->
+    <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-600 to-indigo-800 p-4">
+
+        <!-- Kartu Login -->
+        <div class="bg-white w-full max-w-md p-8 rounded-2xl shadow-2xl">
+            
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800">Selamat Datang!</h1>
+                <p class="text-gray-500 mt-2">Masuk untuk lanjut</p>
+            </div>
+
+            <form id="login-form" novalidate>
+                <!-- Pesan Error Umum (untuk kredensial salah) -->
+                <div id="form-error-container" class="hidden mb-4 p-3 bg-red-100 border border-red-300 text-red-700 rounded-lg text-sm">
+                    <p id="form-error-message"></p>
+                </div>
+                
+                <!-- Input Email -->
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="email" name="email"
+                           class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                           placeholder="contoh@email.com" required>
+                    <p id="email-error" class="text-red-600 text-xs mt-1 hidden error-message">Error message here</p>
+                </div>
+
+                <!-- Input Password -->
+                <div class="mb-6">
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="password" name="password"
+                           class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                           placeholder="********" required>
+                    <p id="password-error" class="text-red-600 text-xs mt-1 hidden error-message">Error message here</p>
+                </div>
+
+                <!-- Tombol Login -->
+                <button type="submit" id="login-button"
+                        class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all disabled:bg-blue-400 disabled:cursor-not-allowed">
+                    <span id="button-text">Login</span>
+                    <span id="button-spinner" class="hidden">
+                        <svg class="animate-spin h-5 w-5 text-white mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </span>
+                </button>
+
+                <div class="text-center mt-6">
+                    <a href="#" class="text-sm text-blue-600 hover:underline">Lupa password?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Elemen DOM ---
+            const form = document.getElementById('login-form');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const emailError = document.getElementById('email-error');
+            const passwordError = document.getElementById('password-error');
+            const formErrorContainer = document.getElementById('form-error-container');
+            const formErrorMessage = document.getElementById('form-error-message');
+            const loginButton = document.getElementById('login-button');
+            const buttonText = document.getElementById('button-text');
+            const buttonSpinner = document.getElementById('button-spinner');
+
+            // --- Fungsi Helper untuk Menampilkan/Menyembunyikan Error ---
+            function showError(inputElement, errorElement, message) {
+                inputElement.classList.add('border-red-500', 'focus:ring-red-500');
+                inputElement.classList.remove('border-gray-300', 'focus:ring-blue-500');
+                errorElement.textContent = message;
+                errorElement.classList.remove('hidden');
+            }
+
+            function clearError(inputElement, errorElement) {
+                inputElement.classList.remove('border-red-500', 'focus:ring-red-500');
+                inputElement.classList.add('border-gray-300', 'focus:ring-blue-500');
+                errorElement.classList.add('hidden');
+            }
+
+            // --- Fungsi untuk Mengatur State Loading pada Tombol ---
+            function setLoading(isLoading) {
+                if (isLoading) {
+                    loginButton.disabled = true;
+                    buttonText.classList.add('hidden');
+                    buttonSpinner.classList.remove('hidden');
+                } else {
+                    loginButton.disabled = false;
+                    buttonText.classList.remove('hidden');
+                    buttonSpinner.classList.add('hidden');
+                }
+            }
+
+            // --- Event Listener pada Form Submit ---
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Mencegah form melakukan submit standar
+
+                // 1. Reset semua error sebelum validasi ulang
+                clearError(emailInput, emailError);
+                clearError(passwordInput, passwordError);
+                formErrorContainer.classList.add('hidden');
+
+                // 2. Ambil nilai input
+                const email = emailInput.value.trim();
+                const password = passwordInput.value.trim();
+                let isValid = true;
+
+                // 3. Validasi Email
+                if (email === '') {
+                    showError(emailInput, emailError, 'Email tidak boleh kosong.');
+                    isValid = false;
+                } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+                    // Validasi format email sederhana
+                    showError(emailInput, emailError, 'Format email tidak valid.');
+                    isValid = false;
+                }
+
+                // 4. Validasi Password
+                if (password === '') {
+                    showError(passwordInput, passwordError, 'Password tidak boleh kosong.');
+                    isValid = false;
+                }
+
+                // 5. Jika validasi gagal, hentikan proses
+                if (!isValid) {
+                    return;
+                }
+
+                // 6. Jika validasi berhasil, simulasikan proses login
+                setLoading(true);
+
+                setTimeout(() => {
+                    // Data dummy dengan nama pengguna
+                    const dummyUsers = [
+                        { email: 'admin@gmail.com', password: '123', name: 'Admin Utama' },
+                        { email: 'prymerich@gmail.com', password: '123', name: 'Prymerich' },
+                        { email: 'demo@gmail.com', password: '123', name: 'Akun Demo' }
+                    ];
+                
+                    const foundUser = dummyUsers.find(user => user.email === email && user.password === password);
+                
+                    if (foundUser) {
+                        // --- LOGIN BERHASIL ---
+
+                        // 1. Simpan informasi pengguna ke sessionStorage
+                        // Kita simpan sebagai string JSON agar mudah jika ingin menyimpan lebih banyak data
+                        sessionStorage.setItem('loggedInUser', JSON.stringify({
+                            email: foundUser.email,
+                            name: foundUser.name 
+                        }));
+                    
+                        // 2. Arahkan ke halaman dashboard
+                        window.location.href = 'dashboard.html';
+                    
+                    } else {
+                        // --- LOGIN GAGAL ---
+                        formErrorMessage.textContent = 'Email atau password yang Anda masukkan salah.';
+                        formErrorContainer.classList.remove('hidden');
+                        setLoading(false);
+                    }
+                
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>

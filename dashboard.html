@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing - Sistem Informasi Pabrik Garmen</title>
+    <!-- Memuat Tailwind CSS melalui CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat Ikon -->
+    <link href="https://cdn.jsdelivr.net/npm/heroicons@2.1.3/css/solid.css" rel="stylesheet">
+    <!-- Memuat CSS Kustom -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <div class="flex h-screen">
+        <!-- 0. Sidebar (Tetap ada di setiap halaman) -->
+        <aside class="w-64 bg-gray-800 text-white flex flex-col">
+            <div class="px-6 py-4 border-b border-gray-700">
+                <h2 class="text-xl font-bold">Pabrik Garmen</h2>
+                <span id="user-greeting" class="text-sm text-cyan-400"></span> <!-- Tempat untuk pesan sambutan -->
+            </div>
+            <!-- Ganti onclick dengan atribut data-page -->
+            <nav class="flex-1 px-4 py-4 space-y-2">
+                <a href="#" data-page="home" class="sidebar-link flex items-center px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                    Home
+                </a>
+                <a href="#" data-page="pengajuan" class="sidebar-link flex items-center px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                    Pengajuan Kampanye
+                </a>
+                <a href="#" data-page="produk" class="sidebar-link flex items-center px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                    Master Produk
+                </a>
+                <a href="#" data-page="pesanan" class="sidebar-link flex items-center px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+                    Pesanan
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Konten Utama akan dimuat di sini secara dinamis -->
+        <main id="main-content" class="flex-1 p-8 overflow-y-auto">
+            <!-- Konten dimuat oleh js/app.js -->
+        </main>
+    </div>
+
+    <!-- Memuat JavaScript utama di akhir body untuk performa lebih baik -->
+    <script src="app.js"></script>
+
+    <!-- JS untuk session -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Elemen DOM ---
+            const userGreetingElement = document.getElementById('user-greeting');
+            const logoutButton = document.getElementById('logout-button');
+
+            // --- 1. Ambil data pengguna dari sessionStorage ---
+            const userJson = sessionStorage.getItem('loggedInUser');
+
+            // --- 2. Cek apakah pengguna sudah login ---
+            if (userJson) {
+                // Jika data ada, ubah kembali dari string ke objek
+                const userData = JSON.parse(userJson);
+                
+                // Tampilkan pesan sambutan
+                userGreetingElement.textContent = `Hai, ${userData.name}!`;
+
+            } else {
+                // Jika tidak ada data, artinya belum login
+                alert('Anda harus login terlebih dahulu!');
+                // Arahkan kembali ke halaman login
+                window.location.href = 'index.html'; 
+            }
+
+            // --- 3. Fungsi Logout ---
+            logoutButton.addEventListener('click', function() {
+                // Hapus data dari sessionStorage
+                sessionStorage.removeItem('loggedInUser');
+                
+                // Arahkan kembali ke halaman login
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>
