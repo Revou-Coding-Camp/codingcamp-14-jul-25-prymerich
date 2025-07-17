@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marketing - Sistem Informasi Pabrik Garmen</title>
+    <!-- Memuat Tailwind CSS melalui CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat ikon dari Heroicons (dibuat oleh tim Tailwind CSS) -->
+    <link href="https://cdn.jsdelivr.net/npm/heroicons@2.1.3/css/solid.css" rel="stylesheet">
+    <style>
+        /* Gaya tambahan untuk transisi yang mulus */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Style untuk sidebar aktif */
+        .sidebar-link.active {
+            background-color: #3b82f6; /* bg-blue-600 */
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+
+    <div class="flex h-screen">
+        <!-- 0. Sidebar (Tetap ada di setiap halaman) -->
+        <aside class="w-64 bg-gray-800 text-white flex flex-col">
+            <div class="px-6 py-4 border-b border-gray-700">
+                <h2 class="text-xl font-bold">Pabrik Garmen</h2>
+                <span id="user-greeting" class="text-sm text-cyan-400"></span>
+            </div>
+            <nav class="flex-1 px-4 py-4 space-y-2">
+                <a href="#" onclick="showPage('home')" class="sidebar-link active flex items-center px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    Home
+                </a>
+                <a href="#" onclick="showPage('pengajuan')" class="sidebar-link flex items-center px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Pengajuan Kampanye
+                </a>
+                <a href="#" onclick="showPage('produk')" class="sidebar-link flex items-center px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    Master Produk
+                </a>
+                <a href="#" onclick="showPage('pesanan')" class="sidebar-link flex items-center px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zM7 17a2 2 0 100 4 2 2 0 000-4z"></path></svg>
+                    Pesanan
+                </a>
+            </nav>
+            <div class="px-4 py-4 mt-auto">
+                <button id="logout-button" class="w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">
+                    Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Konten Utama -->
+        <main class="flex-1 p-8 overflow-y-auto">
+            
+            <!-- 1. Halaman Home -->
+            <div id="home" class="page active">
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">Dashboard Marketing</h1>
+                
+                <!-- Dashboard Data Analitik -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-gray-500 text-sm font-medium">Total Penjualan (Bulan Ini)</h3>
+                        <p class="text-3xl font-bold text-gray-800 mt-2">Rp 125.450.000</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-gray-500 text-sm font-medium">Pesanan Baru</h3>
+                        <p class="text-3xl font-bold text-gray-800 mt-2">32</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-gray-500 text-sm font-medium">Kampanye Aktif</h3>
+                        <p class="text-3xl font-bold text-gray-800 mt-2">4</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-gray-500 text-sm font-medium">Click-Through Rate (CTR)</h3>
+                        <p class="text-3xl font-bold text-gray-800 mt-2">2.5%</p>
+                    </div>
+                </div>
+
+                <!-- Marketplace & Pengajuan Kampanye -->
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-700">Produk Unggulan</h2>
+                    <div>
+                        <a href="https://tokopedia.com" target="_blank" class="bg-green-500 text-white px-4 py-2 rounded-lg shadow hover:bg-green-600 transition-colors mr-2">Lihat Marketplace</a>
+                        <button onclick="showPage('pengajuan')" class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600 transition-colors">Ajukan Kampanye Baru</button>
+                    </div>
+                </div>
+
+                <!-- View Produk -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Contoh Produk 1: Jas Biru Navy -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+                        <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80" alt="Kemeja Flanel Kotak" class="w-full h-56 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg">Baju Jas Biru Navy</h3>
+                            <p class="text-gray-600 text-sm">Kategori: Atasan</p>
+                            <p class="text-blue-500 font-semibold mt-2">Rp 150.000</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Contoh Produk 2: Celana Jeans Denim -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+                        <img src="https://images.unsplash.com/photo-1602293589930-45aad59ba3ab?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Celana Chino Slim Fit" class="w-full h-56 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg">Celana Jeans Denim</h3>
+                            <p class="text-gray-600 text-sm">Kategori: Bawahan</p>
+                            <p class="text-blue-500 font-semibold mt-2">Rp 225.000</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Contoh Produk 3: Kaos Polo Premium -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:-translate-y-1 transition-transform duration-300">
+                        <img src="https://images.unsplash.com/photo-1586363104862-3a5e2ab60d99?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Kaos Polo Premium" class="w-full h-56 object-cover">
+                        <div class="p-4">
+                            <h3 class="font-bold text-lg">Kaos Polo Premium</h3>
+                            <p class="text-gray-600 text-sm">Kategori: Atasan</p>
+                            <p class="text-blue-500 font-semibold mt-2">Rp 180.000</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Halaman Pengajuan Kampanye -->
+            <div id="pengajuan" class="page">
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">Formulir Pengajuan Kampanye</h1>
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <form action="#" method="POST" class="space-y-6">
+                        <div>
+                            <label for="nama_kampanye" class="block text-sm font-medium text-gray-700">Nama Kampanye</label>
+                            <input type="text" id="nama_kampanye" name="nama_kampanye" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: Diskon Kemerdekaan 17%">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="tanggal_mulai" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
+                                <input type="date" id="tanggal_mulai" name="tanggal_mulai" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                            </div>
+                            <div>
+                                <label for="tanggal_selesai" class="block text-sm font-medium text-gray-700">Tanggal Selesai</label>
+                                <input type="date" id="tanggal_selesai" name="tanggal_selesai" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                            </div>
+                        </div>
+                         <div>
+                            <label for="perkiraan_anggaran" class="block text-sm font-medium text-gray-700">Perkiraan Anggaran (Rp)</label>
+                            <input type="number" id="perkiraan_anggaran" name="perkiraan_anggaran" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" placeholder="5000000">
+                        </div>
+                        <div>
+                            <label for="rincian_anggaran" class="block text-sm font-medium text-gray-700">Rincian Anggaran</label>
+                            <textarea id="rincian_anggaran" name="rincian_anggaran" rows="4" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" placeholder="Contoh:
+- Iklan Media Sosial: Rp 2.000.000
+- Endorser: Rp 2.500.000
+- Voucher Diskon: Rp 500.000"></textarea>
+                        </div>
+                        <div>
+                            <label for="target_pasar" class="block text-sm font-medium text-gray-700">Target Pasar</label>
+                            <input type="text" id="target_pasar" name="target_pasar" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" placeholder="Pria & Wanita, usia 18-35 tahun, area Jabodetabek">
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex justify-end space-x-4 pt-4 border-t border-gray-200">
+                            <button type="button" class="bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-300">Simpan sebagai Draft</button>
+                            <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700">Ajukan Kampanye</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 3. Halaman Master Data Produk -->
+            <div id="produk" class="page">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-3xl font-bold text-gray-800">Master Data Produk</h1>
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600">Tambah Produk Baru</button>
+                </div>
+                <!-- Tabel Produk -->
+                <div class="bg-white shadow-md rounded-lg overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-600">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Kode Produk</th>
+                                <th scope="col" class="px-6 py-3">Nama Produk</th>
+                                <th scope="col" class="px-6 py-3">Kategori</th>
+                                <th scope="col" class="px-6 py-3">Berat (g)</th>
+                                <th scope="col" class="px-6 py-3">Harga (Rp)</th>
+                                <th scope="col" class="px-6 py-3">Status</th>
+                                <th scope="col" class="px-6 py-3">Jadwal Post</th>
+                                <th scope="col" class="px-6 py-3">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white border-b">
+                                <td class="px-6 py-4 font-medium">K-FLN-001</td>
+                                <td class="px-6 py-4">Kemeja Flanel Kotak</td>
+                                <td class="px-6 py-4">Atasan</td>
+                                <td class="px-6 py-4">350</td>
+                                <td class="px-6 py-4">150.000</td>
+                                <td class="px-6 py-4"><span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">Posted</span></td>
+                                <td class="px-6 py-4">-</td>
+                                <td class="px-6 py-4 flex space-x-2">
+                                    <a href="#" class="text-blue-600 hover:text-blue-900">Edit</a>
+                                    <a href="#" class="text-red-600 hover:text-red-900">Hapus</a>
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-50 border-b">
+                                <td class="px-6 py-4 font-medium">C-CHN-002</td>
+                                <td class="px-6 py-4">Celana Chino Slim Fit</td>
+                                <td class="px-6 py-4">Bawahan</td>
+                                <td class="px-6 py-4">450</td>
+                                <td class="px-6 py-4">225.000</td>
+                                <td class="px-6 py-4"><span class="bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">Scheduled</span></td>
+                                <td class="px-6 py-4">25 Des 2024, 10:00</td>
+                                <td class="px-6 py-4 flex space-x-2">
+                                    <a href="#" class="text-blue-600 hover:text-blue-900">Edit</a>
+                                    <a href="#" class="text-red-600 hover:text-red-900">Hapus</a>
+                                </td>
+                            </tr>
+                             <tr class="bg-white border-b">
+                                <td class="px-6 py-4 font-medium">T-PLO-003</td>
+                                <td class="px-6 py-4">Kaos Polo Premium</td>
+                                <td class="px-6 py-4">Atasan</td>
+                                <td class="px-6 py-4">250</td>
+                                <td class="px-6 py-4">180.000</td>
+                                <td class="px-6 py-4"><span class="bg-gray-100 text-gray-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">Draft</span></td>
+                                <td class="px-6 py-4">-</td>
+                                <td class="px-6 py-4 flex space-x-2">
+                                    <a href="#" class="text-blue-600 hover:text-blue-900">Edit</a>
+                                    <a href="#" class="text-red-600 hover:text-red-900">Hapus</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 4. Halaman Pesanan -->
+            <div id="pesanan" class="page">
+                <h1 class="text-3xl font-bold text-gray-800 mb-6">Analitik & Manajemen Pesanan</h1>
+                
+                <!-- Dashboard Statistik Penjualan -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-gray-500 text-sm font-medium">Pesanan Selesai</h3>
+                        <p class="text-3xl font-bold text-gray-800 mt-2">1,240</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-gray-500 text-sm font-medium">Pendapatan Kotor</h3>
+                        <p class="text-3xl font-bold text-gray-800 mt-2">Rp 210.700.000</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-gray-500 text-sm font-medium">Pesanan Perlu Diproses</h3>
+                        <p class="text-3xl font-bold text-red-500 mt-2">15</p>
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-700">Daftar Pesanan Masuk</h2>
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-600">Buat Pesanan Manual</button>
+                </div>
+
+                <!-- Tabel Pesanan -->
+                 <div class="bg-white shadow-md rounded-lg overflow-x-auto">
+                    <table class="w-full text-sm text-left text-gray-600">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">ID Pesanan</th>
+                                <th scope="col" class="px-6 py-3">Nama Pelanggan</th>
+                                <th scope="col" class="px-6 py-3">Tanggal</th>
+                                <th scope="col" class="px-6 py-3">Total (Rp)</th>
+                                <th scope="col" class="px-6 py-3">Status</th>
+                                <th scope="col" class="px-6 py-3">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white border-b">
+                                <td class="px-6 py-4 font-medium">INV/2024/12/001</td>
+                                <td class="px-6 py-4">Budi Santoso</td>
+                                <td class="px-6 py-4">12 Des 2024</td>
+                                <td class="px-6 py-4">375.000</td>
+                                <td class="px-6 py-4"><span class="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">Selesai</span></td>
+                                <td class="px-6 py-4"><a href="#" class="text-blue-600 hover:text-blue-900">Detail</a></td>
+                            </tr>
+                            <tr class="bg-gray-50 border-b">
+                                <td class="px-6 py-4 font-medium">INV/2024/12/002</td>
+                                <td class="px-6 py-4">Ani Lestari</td>
+                                <td class="px-6 py-4">12 Des 2024</td>
+                                <td class="px-6 py-4">180.000</td>
+                                <td class="px-6 py-4"><span class="bg-blue-100 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">Dikirim</span></td>
+                                <td class="px-6 py-4"><a href="#" class="text-blue-600 hover:text-blue-900">Detail</a></td>
+                            </tr>
+                            <tr class="bg-white border-b">
+                                <td class="px-6 py-4 font-medium">INV/2024/12/003</td>
+                                <td class="px-6 py-4">Citra Wijaya</td>
+                                <td class="px-6 py-4">13 Des 2024</td>
+                                <td class="px-6 py-4">225.000</td>
+                                <td class="px-6 py-4"><span class="bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">Menunggu Pembayaran</span></td>
+                                <td class="px-6 py-4"><a href="#" class="text-blue-600 hover:text-blue-900">Detail</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- JavaScript untuk interaktivitas navigasi -->
+    <script>
+        function showPage(pageId) {
+            // Sembunyikan semua halaman
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Tampilkan halaman yang dipilih
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+            
+            // Atur style link sidebar yang aktif
+             document.querySelectorAll('.sidebar-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`.sidebar-link[onclick="showPage('${pageId}')"]`).classList.add('active');
+        }
+    </script>
+
+    <!-- JS untuk session -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- Elemen DOM ---
+            const userGreetingElement = document.getElementById('user-greeting');
+            const logoutButton = document.getElementById('logout-button');
+
+            // --- 1. Ambil data pengguna dari sessionStorage ---
+            const userJson = sessionStorage.getItem('loggedInUser');
+
+            // --- 2. Cek apakah pengguna sudah login ---
+            if (userJson) {
+                // Jika data ada, ubah kembali dari string ke objek
+                const userData = JSON.parse(userJson);
+                
+                // Tampilkan pesan sambutan
+                userGreetingElement.textContent = `Hai, ${userData.name}!`;
+
+            } else {
+                // Jika tidak ada data, artinya belum login
+                alert('Anda harus login terlebih dahulu!');
+                // Arahkan kembali ke halaman login
+                window.location.href = 'index.html'; 
+            }
+
+            // --- 3. Fungsi Logout ---
+            logoutButton.addEventListener('click', function() {
+                // Hapus data dari sessionStorage
+                sessionStorage.removeItem('loggedInUser');
+                
+                // Arahkan kembali ke halaman login
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+
+</body>
+</html>
